@@ -59,7 +59,7 @@ GLfloat pitch, yaw;
 int lastX, lastY;
 
 // Texture variables.
-GLuint alexTx, blankTx, leavesTx;
+GLuint alexTx, blankTx, leavesTx, wallTx;
 GLint width, height, bitDepth;
 
 // Light variables.
@@ -93,9 +93,13 @@ void resetView()
 
 // Shapes. Recommend putting in a map
 Cube g_cube;
+Cube g_wall;
 Prism g_prism(24);
-//Plane g_plane;
-Grid g_grid(10,3); // New UV scale parameter. Works with texture now.
+Plane g_plane;
+Grid g_grid(10); // New UV scale parameter. Works with texture now.
+std::vector<glm::vec3> g_wallPositions = 
+{ glm::vec3(1, 0, 1)
+};
 
 void init(void)
 {
@@ -116,7 +120,7 @@ void init(void)
 	viewID = glGetUniformLocation(program, "view");
 
 	// Projection matrix : 45∞ Field of View, aspect ratio, display range : 0.1 unit <-> 100 units
-	Projection = glm::perspective(glm::radians(45.0f), 1.0f / 1.0f, 0.1f, 100.0f);
+	Projection = glm::perspective(glm::radians(45.0f), 1.0f / 1.0f, 0.1f, 300.0f);
 	// Or, for an ortho camera :
 	// Projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 100.0f); // In world coordinates
 
@@ -172,6 +176,20 @@ void init(void)
 	glGenerateMipmap(GL_TEXTURE_2D);
 	//glBindTexture(GL_TEXTURE_2D, 0);
 	stbi_image_free(image3);
+
+	unsigned char* image4 = stbi_load("brick.jpg", &width, &height, &bitDepth, 0);
+	if (!image4) cout << "Unable to load file!" << endl;
+
+	glGenTextures(1, &wallTx);
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image4);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	//glBindTexture(GL_TEXTURE_2D, 0);
+	stbi_image_free(image4);
 
 	glUniform1i(glGetUniformLocation(program, "texture0"), 0);
 
@@ -286,6 +304,17 @@ void transformObject(glm::vec3 scale, glm::vec3 rotationAxis, float rotationAngl
 //
 // display
 //
+void drawWalls()
+{
+	for (int i = 0; i < g_wallPositions.size(); i++)
+	{
+		glBindTexture(GL_TEXTURE_2D, wallTx);
+		g_wall.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+		transformObject(glm::vec3(2.0f, 6.0f, 2.0f), X_AXIS, 0.0f, g_wallPositions[i]);
+		glDrawElements(GL_TRIANGLES, g_wall.NumIndices(), GL_UNSIGNED_SHORT, 0);
+	}
+}
+
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -299,13 +328,19 @@ void display(void)
 	transformObject(glm::vec3(10.0f, 10.0f, 1.0f), X_AXIS, -90.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, g_plane.NumIndices(), GL_UNSIGNED_SHORT, 0);*/
 
-	glBindTexture(GL_TEXTURE_2D, alexTx);
+	/*glBindTexture(GL_TEXTURE_2D, alexTx);
 	g_grid.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(100.0f, 100.0f, 1.0f), X_AXIS, -90.0f, glm::vec3(0.0f, 0.0f, 0.0f));
-	glDrawElements(GL_TRIANGLES, g_grid.NumIndices(), GL_UNSIGNED_SHORT, 0);
+	glDrawElements(GL_TRIANGLES, g_grid.NumIndices(), GL_UNSIGNED_SHORT, 0);*/
+
+	glBindTexture(GL_TEXTURE_2D, alexTx);
+	g_plane.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(100.0f, 100.0f, 1.0f), X_AXIS, -90.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+	glDrawElements(GL_TRIANGLES, g_plane.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
 	glUniform3f(glGetUniformLocation(program, "sLight.position"), sLight.position.x, sLight.position.y, sLight.position.z);
 
+	drawWalls();
 	// first sector
 	// borders and left side
 
