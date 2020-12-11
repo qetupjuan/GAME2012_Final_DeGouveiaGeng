@@ -64,7 +64,7 @@ GLint width, height, bitDepth;
 
 // Light variables.
 AmbientLight aLight(glm::vec3(1.0f, 1.0f, 1.0f),	// Ambient colour.
-	0.1f);							// Ambient strength.
+	0.25f);							// Ambient strength.
 
 DirectionalLight dLight(glm::vec3(-1.0f, 0.0f, -0.5f), // Direction.
 	glm::vec3(1.0f, 1.0f, 0.25f),  // Diffuse colour.
@@ -97,8 +97,20 @@ Cube g_wall;
 Prism g_prism(24);
 Plane g_plane;
 Grid g_grid(10); // New UV scale parameter. Works with texture now.
-std::vector<glm::vec3> g_wallPositions = 
-{ glm::vec3(1, 0, 1)
+std::vector<glm::vec3> g_wallPositions;
+
+void createWallPos()
+{
+	for (int z = 0; z <= 100; z += 2)
+	{
+		g_wallPositions.push_back(glm::vec3(0, 0, -z));
+		g_wallPositions.push_back(glm::vec3(100, 0, -z));
+	}
+	for (int x = 1; x <= 100; x += 2)
+	{
+		g_wallPositions.push_back(glm::vec3(x, 0, 0));
+		g_wallPositions.push_back(glm::vec3(x, 0, -100));
+	}
 };
 
 void init(void)
@@ -261,6 +273,8 @@ void init(void)
 	glCullFace(GL_BACK);
 
 	timer(0); 
+
+	createWallPos();
 }
 
 //---------------------------------------------------------------------
