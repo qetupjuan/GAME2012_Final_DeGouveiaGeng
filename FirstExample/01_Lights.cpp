@@ -32,9 +32,9 @@ using namespace std;
 
 
 enum keyMasks {
-	KEY_FORWARD =  0b00000001,		// 0x01 or 1 or 01
+	KEY_FORWARD = 0b00000001,		// 0x01 or 1 or 01
 	KEY_BACKWARD = 0b00000010,		// 0x02 or 2 or 02
-	KEY_LEFT = 0b00000100,		
+	KEY_LEFT = 0b00000100,
 	KEY_RIGHT = 0b00001000,
 	KEY_UP = 0b00010000,
 	KEY_DOWN = 0b00100000,
@@ -59,7 +59,7 @@ GLfloat pitch, yaw;
 int lastX, lastY;
 
 // Texture variables.
-GLuint alexTx, blankTx, leavesTx, wallTx, wall2Tx;
+GLuint alexTx, blankTx, leavesTx, wallTx, wall2Tx, glassTx, woodTx, doorTx, roofTx, door2Tx;
 GLint width, height, bitDepth;
 
 // Light variables.
@@ -158,7 +158,7 @@ void createWallPos()
 	{
 		g_merlonsPositions.push_back(glm::vec3(6, 0, -z));
 		g_merlonsPositions.push_back(glm::vec3(63, 0, -z));
-		
+
 	}
 	for (int x = 0; x <= 8; x += 2)
 	{
@@ -282,6 +282,82 @@ void init(void)
 	//glBindTexture(GL_TEXTURE_2D, 0);
 	stbi_image_free(image5);
 
+	unsigned char* image6 = stbi_load("glass.png", &width, &height, &bitDepth, 0);
+	if (!image6) cout << "Unable to load file!" << endl;
+
+	glGenTextures(1, &glassTx);
+	glBindTexture(GL_TEXTURE_2D, glassTx);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image6);
+	// Note: image types with native transparency will need to be GL_RGBA instead of GL_RGB.
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	//glBindTexture(GL_TEXTURE_2D, 0);
+	stbi_image_free(image6);
+
+	// dfgsggsdfgfds  woodTx, doorTx, roofTx;
+
+	unsigned char* image7 = stbi_load("wood1.jpg", &width, &height, &bitDepth, 0);
+	if (!image7) cout << "Unable to load file!" << endl;
+
+	glGenTextures(1, &woodTx);
+	glBindTexture(GL_TEXTURE_2D, woodTx);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image7);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	//glBindTexture(GL_TEXTURE_2D, 0);
+	stbi_image_free(image7);
+
+	unsigned char* image8 = stbi_load("door6.png", &width, &height, &bitDepth, 0);
+	if (!image8) cout << "Unable to load file!" << endl;
+
+	glGenTextures(1, &doorTx);
+	glBindTexture(GL_TEXTURE_2D, doorTx);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image8);
+	// Note: image types with native transparency will need to be GL_RGBA instead of GL_RGB.
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	//glBindTexture(GL_TEXTURE_2D, 0);
+	stbi_image_free(image8);
+
+	unsigned char* image9 = stbi_load("roof.png", &width, &height, &bitDepth, 0);
+	if (!image9) cout << "Unable to load file!" << endl;
+
+	glGenTextures(1, &roofTx);
+	glBindTexture(GL_TEXTURE_2D, roofTx);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image9);
+	// Note: image types with native transparency will need to be GL_RGBA instead of GL_RGB.
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	//glBindTexture(GL_TEXTURE_2D, 0);
+	stbi_image_free(image9);
+
+	unsigned char* image10 = stbi_load("door5.png", &width, &height, &bitDepth, 0);
+	if (!image10) cout << "Unable to load file!" << endl;
+
+	glGenTextures(1, &door2Tx);
+	glBindTexture(GL_TEXTURE_2D, door2Tx);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image10);
+	// Note: image types with native transparency will need to be GL_RGBA instead of GL_RGB.
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	//glBindTexture(GL_TEXTURE_2D, 0);
+	stbi_image_free(image10);
+
 	glUniform1i(glGetUniformLocation(program, "texture0"), 0);
 
 	// Setting ambient Light.
@@ -348,6 +424,7 @@ void init(void)
 	// Enable depth test and blend.
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// Enable face culling.
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
@@ -1128,16 +1205,18 @@ void display(void)
 	transformObject(glm::vec3(9.0f, 0.1f, 5.0f), X_AXIS, 0.0f, glm::vec3(30.0f, 0.0f, -46.0f));
 	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	// pedestal 
-
+	// pedestals 
 
 	glBindTexture(GL_TEXTURE_2D, wall2Tx);
 	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(34.0f, 0.0f, -44.0f));
 	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
+	glBindTexture(GL_TEXTURE_2D, glassTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(9.0f, 0.3f, 5.0f), X_AXIS, 0.0f, glm::vec3(30.0f, 3.7f, -46.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	
 	// third sector
 	// left
 
@@ -2015,45 +2094,111 @@ void display(void)
 	transformObject(glm::vec3(4.0f, 8.0f, 4.0f), X_AXIS, 0.0f, glm::vec3(27.0f, 0.0f, -8.5f));
 	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	/*glBindTexture(GL_TEXTURE_2D, blankTx);
-	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
-	transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(3.0f, 0.0f, -2.0f));
-	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);*/
+	// steps
+
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(7.0f, 1.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(30.0f, 0.0f, -9.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(7.0f, 0.60f, 1.0f), X_AXIS, 0.0f, glm::vec3(30.0f, 0.0f, -9.8f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(7.0f, 0.3f, 1.0f), X_AXIS, 0.0f, glm::vec3(30.0f, 0.0f, -10.6f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(0.5f, 2.0f, 3.0f), X_AXIS, 0.0f, glm::vec3(30.0f, 0.0f, -10.7f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(0.5f, 2.0f, 3.0f), X_AXIS, 0.0f, glm::vec3(36.5f, 0.0f, -10.7f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	// Door
+
+	glBindTexture(GL_TEXTURE_2D, doorTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(5.0f, 6.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(31.0f, 2.0f, -7.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(5.0f, 2.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(31.0f, 0.0f, -7.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(5.0f, 1.6f, 1.0f), X_AXIS, 0.0f, glm::vec3(31.0f, 0.0f, -8.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, woodTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(4.0f, 0.5f, 6.0f), X_AXIS, 20.0f, glm::vec3(31.5f, 1.8f, -6.5f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	// back door
+
+	glBindTexture(GL_TEXTURE_2D, door2Tx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(3.0f, 4.0f, 2.0f), X_AXIS, 0.0f, glm::vec3(52.0f, 0.0f, -82.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(3.0f, 1.2f, 3.0f), X_AXIS, 0.0f, glm::vec3(52.0f, 4.0f, -82.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, leavesTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(1.0f, 3.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(51.0f, 0.0f, -79.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, leavesTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(1.0f, 3.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(55.0f, 0.0f, -79.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
 	//Corner hats
-	glBindTexture(GL_TEXTURE_2D, wallTx);
+	glBindTexture(GL_TEXTURE_2D, roofTx);
 	g_hat.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(10.0f, 12.0f, 10.0f), X_AXIS, 0.0f, glm::vec3(3.0f, 8.0f, -11.0f));
 	glDrawElements(GL_TRIANGLES, g_hat.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	glBindTexture(GL_TEXTURE_2D, wallTx);
+	glBindTexture(GL_TEXTURE_2D, roofTx);
 	g_hat.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(15.0f, 16.0f, 15.0f), X_AXIS, 0.0f, glm::vec3(53.5f, 8.0f, -16.3f));
 	glDrawElements(GL_TRIANGLES, g_hat.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	glBindTexture(GL_TEXTURE_2D, wallTx);
+	glBindTexture(GL_TEXTURE_2D, roofTx);
 	g_hat.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(15.0f, 15.0f, 15.0f), X_AXIS, 0.0f, glm::vec3(3.5f, 8.0f, -86.5f));
 	glDrawElements(GL_TRIANGLES, g_hat.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	glBindTexture(GL_TEXTURE_2D, wallTx);
+	glBindTexture(GL_TEXTURE_2D, roofTx);
 	g_hat.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(10.0f, 12.0f, 10.0f), X_AXIS, 0.0f, glm::vec3(57.0f, 8.0f, -85.0f));
 	glDrawElements(GL_TRIANGLES, g_hat.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	glBindTexture(GL_TEXTURE_2D, wallTx);
+	glBindTexture(GL_TEXTURE_2D, roofTx);
 	g_hat.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(6.0f, 7.0f, 6.0f), X_AXIS, 0.0f, glm::vec3(35.0f, 8.0f, -9.5f));
 	glDrawElements(GL_TRIANGLES, g_hat.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	glBindTexture(GL_TEXTURE_2D, wallTx);
+	glBindTexture(GL_TEXTURE_2D, roofTx);
 	g_hat.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(6.0f, 7.0f, 6.0f), X_AXIS, 0.0f, glm::vec3(26.0f, 8.0f, -9.5f));
 	glDrawElements(GL_TRIANGLES, g_hat.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
 	//plumbob
 
-	if ((b_height < 1.0f)||(b_height >= 2.0f))
+	if ((b_height < 1.0f) || (b_height >= 2.0f))
 	{
 		b_dir *= -1.0f;
 	}
@@ -2061,12 +2206,12 @@ void display(void)
 	g_plumbob.ColorShape(0.0f, 1.0f, 0.0f);
 
 	g_plumbob.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
-	transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 0.0f, glm::vec3(20.0f, b_height, -25.5f));
+	transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 0.0f, glm::vec3(21.2f, b_height, -24.8f));
 	glDrawElements(GL_TRIANGLES, g_plumbob.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
 	//g_plumbob.ColorShape(0.0f, 1.0f, 0.0f);
 	g_plumbob.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
-	transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 180.0f, glm::vec3(20.0f, b_height, -25.0f));
+	transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 180.0f, glm::vec3(21.2f, b_height, -24.3f));
 	glDrawElements(GL_TRIANGLES, g_plumbob.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
 
@@ -2093,7 +2238,7 @@ void parseKeys()
 void timer(int) { // essentially our update()
 	parseKeys();
 	glutPostRedisplay();
-	glutTimerFunc(1000/FPS, timer, 0); // 60 FPS or 16.67ms.
+	glutTimerFunc(1000 / FPS, timer, 0); // 60 FPS or 16.67ms.
 }
 
 //---------------------------------------------------------------------
@@ -2243,7 +2388,7 @@ int main(int argc, char** argv)
 
 	glutMouseFunc(mouseClick);
 	glutMotionFunc(mouseMove); // Requires click to register.
-	
+
 	atexit(clean); // This GLUT function calls specified function before terminating program. Useful!
 
 	glutMainLoop();

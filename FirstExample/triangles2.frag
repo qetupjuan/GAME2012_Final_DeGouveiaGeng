@@ -20,7 +20,7 @@ uniform AmbientLight aLight;
 
 void main()
 {
-	vec4 calcColour = vec4(0,0,0,0);
+	vec4 calcColour = vec4(0,0,0,1);
 	
 	vec4 ambient = vec4(aLight.ambientColour, 1.0f) * aLight.ambientStrength;
 	calcColour += ambient;
