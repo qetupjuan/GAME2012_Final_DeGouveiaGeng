@@ -1123,6 +1123,11 @@ void display(void)
 	transformObject(glm::vec3(1.0f, 4.0f, 3.0f), X_AXIS, 0.0f, glm::vec3(39.0f, 0.0f, -43.0f));
 	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
+	glBindTexture(GL_TEXTURE_2D, wall2Tx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(9.0f, 0.1f, 5.0f), X_AXIS, 0.0f, glm::vec3(30.0f, 0.0f, -46.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
 	// pedestal 
 
 
