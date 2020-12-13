@@ -70,8 +70,11 @@ DirectionalLight dLight(glm::vec3(-1.0f, 0.0f, -0.5f), // Direction.
 	glm::vec3(1.0f, 1.0f, 0.25f),  // Diffuse colour.
 	0.1f);						  // Diffuse strength.
 
-PointLight pLights[2] = { { glm::vec3(7.5f, 1.0f, -5.0f), 5.0f, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f },
-						  { glm::vec3(2.5f, 0.5f, -5.0f), 2.5f, glm::vec3(0.0f, 0.0f, 1.0f), 1.0f } };
+PointLight pLights[5] = { { glm::vec3(29.0f, 6.0f, -4.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f },
+						  { glm::vec3(37.5f, 6.0f, -4.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f }, 
+						{ glm::vec3(21.0f, 2.0f, -24.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f }, 
+						{ glm::vec3(34.0f, 4.0f, -43.5f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f },
+						{ glm::vec3(53.5f, 4.0f, -78.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f } };
 
 SpotLight sLight(glm::vec3(5.0f, 1.75f, -5.0f),	// Position.
 	glm::vec3(1.0f, 1.0f, 1.0f),	// Diffuse colour.
@@ -384,6 +387,28 @@ void init(void)
 	glUniform1f(glGetUniformLocation(program, "pLights[1].constant"), pLights[1].constant);
 	glUniform1f(glGetUniformLocation(program, "pLights[1].linear"), pLights[1].linear);
 	glUniform1f(glGetUniformLocation(program, "pLights[1].exponent"), pLights[1].exponent);
+
+	glUniform3f(glGetUniformLocation(program, "pLights[2].base.diffuseColour"), pLights[2].diffuseColour.x, pLights[2].diffuseColour.y, pLights[2].diffuseColour.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[2].base.diffuseStrength"), pLights[2].diffuseStrength);
+	glUniform3f(glGetUniformLocation(program, "pLights[2].position"), pLights[2].position.x, pLights[2].position.y, pLights[2].position.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[2].constant"), pLights[2].constant);
+	glUniform1f(glGetUniformLocation(program, "pLights[2].linear"), pLights[2].linear);
+	glUniform1f(glGetUniformLocation(program, "pLights[2].exponent"), pLights[2].exponent);
+
+	glUniform3f(glGetUniformLocation(program, "pLights[3].base.diffuseColour"), pLights[3].diffuseColour.x, pLights[3].diffuseColour.y, pLights[3].diffuseColour.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[3].base.diffuseStrength"), pLights[3].diffuseStrength);
+	glUniform3f(glGetUniformLocation(program, "pLights[3].position"), pLights[3].position.x, pLights[3].position.y, pLights[3].position.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[3].constant"), pLights[3].constant);
+	glUniform1f(glGetUniformLocation(program, "pLights[3].linear"), pLights[3].linear);
+	glUniform1f(glGetUniformLocation(program, "pLights[3].exponent"), pLights[3].exponent);
+
+	glUniform3f(glGetUniformLocation(program, "pLights[4].base.diffuseColour"), pLights[4].diffuseColour.x, pLights[4].diffuseColour.y, pLights[4].diffuseColour.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[4].base.diffuseStrength"), pLights[4].diffuseStrength);
+	glUniform3f(glGetUniformLocation(program, "pLights[4].position"), pLights[4].position.x, pLights[4].position.y, pLights[4].position.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[4].constant"), pLights[4].constant);
+	glUniform1f(glGetUniformLocation(program, "pLights[4].linear"), pLights[4].linear);
+	glUniform1f(glGetUniformLocation(program, "pLights[4].exponent"), pLights[4].exponent);
+
 
 	// Setting spot light.
 	glUniform3f(glGetUniformLocation(program, "sLight.base.diffuseColour"), sLight.diffuseColour.x, sLight.diffuseColour.y, sLight.diffuseColour.z);
@@ -2204,12 +2229,13 @@ void display(void)
 	}
 	b_height += b_dir;
 	g_plumbob.ColorShape(0.0f, 1.0f, 0.0f);
-
+	glBindTexture(GL_TEXTURE_2D, blankTx);
 	g_plumbob.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 0.0f, glm::vec3(21.2f, b_height, -24.8f));
 	glDrawElements(GL_TRIANGLES, g_plumbob.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
 	//g_plumbob.ColorShape(0.0f, 1.0f, 0.0f);
+	glBindTexture(GL_TEXTURE_2D, blankTx);
 	g_plumbob.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 180.0f, glm::vec3(21.2f, b_height, -24.3f));
 	glDrawElements(GL_TRIANGLES, g_plumbob.NumIndices(), GL_UNSIGNED_SHORT, 0);
