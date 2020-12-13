@@ -82,17 +82,21 @@ DirectionalLight dLight(glm::vec3(-1.0f, 0.0f, -0.5f), // Direction.
 	glm::vec3(1.0f, 1.0f, 0.25f),  // Diffuse colour.
 	0.1f);						  // Diffuse strength.
 
-PointLight pLights[5] = { { glm::vec3(29.0f, 6.0f, -4.0f), 50.0f, glm::vec3(1.0f, 0.6f, 0.0f), 1.0f },
+PointLight pLights[7] = { { glm::vec3(29.0f, 6.0f, -4.0f), 50.0f, glm::vec3(1.0f, 0.6f, 0.0f), 1.0f },
 						  { glm::vec3(37.5f, 6.0f, -4.0f), 50.0f, glm::vec3(1.0f, 0.6f, 0.0f), 1.0f }, 
 						{ glm::vec3(21.0f, 2.0f, -24.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f }, 
-						{ glm::vec3(34.5f, 1.1f, -43.5f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f },
-						{ glm::vec3(53.5f, 4.0f, -78.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f } };
+						{ glm::vec3(34.5f, 1.1f, -43.5f), 50.0f, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f },
+						{ glm::vec3(53.5f, 4.0f, -77.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f },
+						{ glm::vec3(59.0f, 7.0f, -15.5f), 50.0f, glm::vec3(1.0f, 0.6f, 0.0f), 1.0f }, 
+						{ glm::vec3(11.0f, 7.0f, -72.5f), 50.0f, glm::vec3(1.0f, 0.6f, 0.0f), 1.0f } };
 
-SpotLight sLight(glm::vec3(5.0f, 1.75f, -5.0f),	// Position.
-	glm::vec3(1.0f, 1.0f, 1.0f),	// Diffuse colour.
-	1.0f,							// Diffuse strength.
-	glm::vec3(0.0f, -1.0f, 0.0f),  // Direction.
-	15.0f);
+PointLight* p_lightP = &pLights[3];
+
+//SpotLight sLight(glm::vec3(5.0f, 1.75f, -5.0f),	// Position.
+//	glm::vec3(1.0f, 1.0f, 1.0f),	// Diffuse colour.
+//	1.0f,							// Diffuse strength.
+//	glm::vec3(0.0f, -1.0f, 0.0f),  // Direction.
+//	15.0f);
 
 void timer(int);
 
@@ -113,7 +117,6 @@ Cone g_hat(24);
 Cone g_plumbob(5);
 Prism g_prism(24);
 Plane g_plane;
-Grid g_grid(10); // New UV scale parameter. Works with texture now.
 std::vector<glm::vec3> g_wallPositions;
 std::vector<glm::vec3> g_merlonsPositions;
 
@@ -466,15 +469,29 @@ void init(void)
 	glUniform1f(glGetUniformLocation(program, "pLights[4].linear"), pLights[4].linear);
 	glUniform1f(glGetUniformLocation(program, "pLights[4].exponent"), pLights[4].exponent);
 
+	glUniform3f(glGetUniformLocation(program, "pLights[5].base.diffuseColour"), pLights[5].diffuseColour.x, pLights[5].diffuseColour.y, pLights[5].diffuseColour.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[5].base.diffuseStrength"), pLights[5].diffuseStrength);
+	glUniform3f(glGetUniformLocation(program, "pLights[5].position"), pLights[5].position.x, pLights[5].position.y, pLights[5].position.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[5].constant"), pLights[5].constant);
+	glUniform1f(glGetUniformLocation(program, "pLights[5].linear"), pLights[5].linear);
+	glUniform1f(glGetUniformLocation(program, "pLights[5].exponent"), pLights[5].exponent);
+
+	glUniform3f(glGetUniformLocation(program, "pLights[6].base.diffuseColour"), pLights[6].diffuseColour.x, pLights[6].diffuseColour.y, pLights[6].diffuseColour.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[6].base.diffuseStrength"), pLights[6].diffuseStrength);
+	glUniform3f(glGetUniformLocation(program, "pLights[6].position"), pLights[6].position.x, pLights[6].position.y, pLights[6].position.z);
+	glUniform1f(glGetUniformLocation(program, "pLights[6].constant"), pLights[6].constant);
+	glUniform1f(glGetUniformLocation(program, "pLights[6].linear"), pLights[6].linear);
+	glUniform1f(glGetUniformLocation(program, "pLights[6].exponent"), pLights[6].exponent);
+
 
 	// Setting spot light.
-	glUniform3f(glGetUniformLocation(program, "sLight.base.diffuseColour"), sLight.diffuseColour.x, sLight.diffuseColour.y, sLight.diffuseColour.z);
-	glUniform1f(glGetUniformLocation(program, "sLight.base.diffuseStrength"), sLight.diffuseStrength);
+	//glUniform3f(glGetUniformLocation(program, "sLight.base.diffuseColour"), sLight.diffuseColour.x, sLight.diffuseColour.y, sLight.diffuseColour.z);
+	//glUniform1f(glGetUniformLocation(program, "sLight.base.diffuseStrength"), sLight.diffuseStrength);
 
-	glUniform3f(glGetUniformLocation(program, "sLight.position"), sLight.position.x, sLight.position.y, sLight.position.z);
+	//glUniform3f(glGetUniformLocation(program, "sLight.position"), sLight.position.x, sLight.position.y, sLight.position.z);
 
-	glUniform3f(glGetUniformLocation(program, "sLight.direction"), sLight.direction.x, sLight.direction.y, sLight.direction.z);
-	glUniform1f(glGetUniformLocation(program, "sLight.edge"), sLight.edgeRad);
+	//glUniform3f(glGetUniformLocation(program, "sLight.direction"), sLight.direction.x, sLight.direction.y, sLight.direction.z);
+	//glUniform1f(glGetUniformLocation(program, "sLight.edge"), sLight.edgeRad);
 
 	vao = 0;
 	glGenVertexArrays(1, &vao);
@@ -499,7 +516,6 @@ void init(void)
 
 	// Change shape data.
 	g_prism.SetMat(0.1, 16);
-	g_grid.SetMat(0.0, 16);
 	g_hat.SetMat(0.1, 16);
 	g_plumbob.SetMat(0.25, 35);
 
@@ -593,6 +609,7 @@ void checkCollision()
 		{
 			std::cout << "PLUMBOB DETECTED..." << std::endl;
 			std::cout << "EXIT NOW UNLOCKED!" << std::endl;
+			p_lightP->diffuseColour = glm::vec3(0.0f, 1.0f, 0.0f);
 			exitActivated = true;
 			currentCond = RETURNED;
 		}
@@ -649,10 +666,12 @@ void display(void)
 
 	glBindTexture(GL_TEXTURE_2D, alexTx);
 	g_plane.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
-	transformObject(glm::vec3(100.0f, 100.0f, 1.0f), X_AXIS, -90.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+	transformObject(glm::vec3(70.0f, 100.0f, 1.0f), X_AXIS, -90.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 	glDrawElements(GL_TRIANGLES, g_plane.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	glUniform3f(glGetUniformLocation(program, "sLight.position"), sLight.position.x, sLight.position.y, sLight.position.z);
+	glUniform3f(glGetUniformLocation(program, "pLights[3].base.diffuseColour"), pLights[3].diffuseColour.x, pLights[3].diffuseColour.y, pLights[3].diffuseColour.z);
+
+	//glUniform3f(glGetUniformLocation(program, "sLight.position"), sLight.position.x, sLight.position.y, sLight.position.z);
 
 	drawWalls();
 	// first sector
@@ -2249,18 +2268,18 @@ void keyDown(unsigned char key, int x, int y) // x and y is mouse location upon 
 	case 'f':
 		if (!(keys & KEY_DOWN))
 			keys |= KEY_DOWN; break;
-	case 'i':
-		sLight.position.z -= 0.1; break;
-	case 'j':
-		sLight.position.x -= 0.1; break;
-	case 'k':
-		sLight.position.z += 0.1; break;
-	case 'l':
-		sLight.position.x += 0.1; break;
-	case 'p':
-		sLight.position.y += 0.1; break;
-	case ';':
-		sLight.position.y -= 0.1; break;
+	//case 'i':
+	//	sLight.position.z -= 0.1; break;
+	//case 'j':
+	//	sLight.position.x -= 0.1; break;
+	//case 'k':
+	//	sLight.position.z += 0.1; break;
+	//case 'l':
+	//	sLight.position.x += 0.1; break;
+	//case 'p':
+	//	sLight.position.y += 0.1; break;
+	//case ';':
+	//	sLight.position.y -= 0.1; break;
 	}
 }
 
