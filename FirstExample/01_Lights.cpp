@@ -58,7 +58,10 @@ glm::vec3 position, frontVec, worldUp, upVec, rightVec; // Set by function
 GLfloat pitch, yaw;
 int lastX, lastY;
 
-//Collection stuff
+//Collection and collision stuff
+
+bool isExit = false, exitActivated = false, entryDoorLock = false;
+
 enum bob_condition
 {
 	UNTOUCHED,
@@ -574,30 +577,55 @@ void drawWalls()
 	}
 }
 
-void checkCollision(char c)
+void checkCollision()
 {
-	switch (c)
+	if ((abs(position.x - 22.0f) < 2.0f) && (abs(position.z + 25.0f) < 2.0f) && (abs(position.y) < 5.0f))
 	{
-	case 'p': //plumbob
-		if ((abs(position.x - 22.0f) < 2.0f) && (abs(position.z + 25.0f) < 2.0f))
+		if (currentCond == UNTOUCHED)
 		{
-			if (currentCond == UNTOUCHED)
+			std::cout << "PLUMBOB COLLECTED!" << std::endl;
+			currentCond = COLLECTED;
+		}
+	}
+	else if ((abs(position.x - 35.0f) < 2.0f) && (abs(position.z + 45.0f) < 2.0f) && (abs(position.y) < 5.0f))
+	{
+		if (currentCond == COLLECTED)
+		{
+			std::cout << "PLUMBOB DETECTED..." << std::endl;
+			std::cout << "EXIT NOW UNLOCKED!" << std::endl;
+			exitActivated = true;
+			currentCond = RETURNED;
+		}
+	}
+
+	if ((abs(position.x - 54.0f) < 2.0f) && (abs(position.z + 78.0f) < 2.0f) && (abs(position.y) < 5.0f))
+	{
+		if (exitActivated)
+		{
+			std::cout << "THANK YOU FOR PLAYING, WELCOME BACK ANY TIME!" << std::endl;
+		}
+		else
+		{
+			std::cout << "WARNING! MAZE EXIT CURRENTLY LOCKED, PLEASE COLLECT THE PLUMBOB AND DEPLOY AT THE CENTER ROOM TO UNLOCK" << std::endl;
+		}
+	}
+
+	//Initial aka entry check, will lock after passing, so you can't go back
+	if ((abs(position.x - 33.0f) < 3.0f) && (abs(position.z + 8.0f) < 3.0f) && (abs(position.y) < 5.0f)) //entry door check
+	{
+		if (entryDoorLock)
+		{
+			std::cout << "ENTRY LOCKED, YOU ONLY HAVE ONE WAY TO EXIT!" << std::endl;
+		}
+		else
+		{
+			std::cout << "WELCOME TO THE MAZE CASTLE!" << std::endl;
+			if ((abs(position.x - 33.0f) < 3.0f) && (abs(position.z + 12.0f) < 3.0f) && (abs(position.y) < 5.0f)) //will lock the door
 			{
-				currentCond = COLLECTED;
+				std::cout << "ENTRY DOOR IS NOW LOCKED!" << std::endl;
+				entryDoorLock = true;
 			}
 		}
-		else if ((abs(position.x - 35.0f) < 2.0f) && (abs(position.z + 45.0f) < 2.0f))
-		{
-			if (currentCond == COLLECTED)
-			{
-				currentCond = RETURNED;
-			}
-		}
-		break;
-	case 'w': //wall
-		break;
-	case 'e': //exit
-		break;
 	}
 }
 
@@ -2095,7 +2123,7 @@ void display(void)
 	transformObject(glm::vec3(6.0f, 7.0f, 6.0f), X_AXIS, 0.0f, glm::vec3(26.0f, 8.0f, -9.5f));
 	glDrawElements(GL_TRIANGLES, g_hat.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	checkCollision('p');
+	checkCollision();
 
 	//plumbob
 
