@@ -104,49 +104,75 @@ void createWallPos()
 {
 	for (int z = 6; z <= 82; z += 1)
 	{
-		g_wallPositions.push_back(glm::vec3(8, 0, -z));
+		g_wallPositions.push_back(glm::vec3(8, -0.8, -z));
+		g_wallPositions.push_back(glm::vec3(7, -1, -z));
 		g_wallPositions.push_back(glm::vec3(6, 0, -z));
 
-		g_wallPositions.push_back(glm::vec3(61, 0, -z));
+		g_wallPositions.push_back(glm::vec3(61, -0.8, -z));
+		g_wallPositions.push_back(glm::vec3(62, -1, -z));
 		g_wallPositions.push_back(glm::vec3(63, 0, -z));
 	}
 	for (int x = 0; x <= 8; x += 1)
 	{
-		g_wallPositions.push_back(glm::vec3(x + 10, 0, -8));
+		g_wallPositions.push_back(glm::vec3(x + 10, -0.8, -8));
+		g_wallPositions.push_back(glm::vec3(x + 10, -1, -7));
 		g_wallPositions.push_back(glm::vec3(x + 10, 0, -6));
-		g_wallPositions.push_back(glm::vec3(x + 18, 0, -8));
+		g_wallPositions.push_back(glm::vec3(x + 18, -0.8, -8));
+		g_wallPositions.push_back(glm::vec3(x + 18, -1, -7));
 		g_wallPositions.push_back(glm::vec3(x + 18, 0, -6));
-		g_wallPositions.push_back(glm::vec3(x + 21, 0, -8));
+		g_wallPositions.push_back(glm::vec3(x + 21, -0.8, -8));
+		g_wallPositions.push_back(glm::vec3(x + 21, -1, -7));
 		g_wallPositions.push_back(glm::vec3(x + 21, 0, -6));
-		g_wallPositions.push_back(glm::vec3(x + 37, 0, -8));
+		g_wallPositions.push_back(glm::vec3(x + 37, -0.8, -8));
+		g_wallPositions.push_back(glm::vec3(x + 37, -1, -7));
 		g_wallPositions.push_back(glm::vec3(x + 37, 0, -6));
-		g_wallPositions.push_back(glm::vec3(x + 40, 0, -8));
+		g_wallPositions.push_back(glm::vec3(x + 40, -0.8, -8));
+		g_wallPositions.push_back(glm::vec3(x + 40, -1, -7));
 		g_wallPositions.push_back(glm::vec3(x + 40, 0, -6));
-		g_wallPositions.push_back(glm::vec3(x + 47, 0, -8));
+		g_wallPositions.push_back(glm::vec3(x + 47, -0.8, -8));
+		g_wallPositions.push_back(glm::vec3(x + 47, -1, -7));
 		g_wallPositions.push_back(glm::vec3(x + 47, 0, -6));
 
-		g_wallPositions.push_back(glm::vec3(x + 17, 0, -80));
+		g_wallPositions.push_back(glm::vec3(x + 17, -0.8, -80));
+		g_wallPositions.push_back(glm::vec3(x + 17, -1, -81));
 		g_wallPositions.push_back(glm::vec3(x + 17, 0, -82));
-		g_wallPositions.push_back(glm::vec3(x + 25, 0, -80));
+		g_wallPositions.push_back(glm::vec3(x + 25, -0.8, -80));
+		g_wallPositions.push_back(glm::vec3(x + 25, -1, -81));
 		g_wallPositions.push_back(glm::vec3(x + 25, 0, -82));
-		g_wallPositions.push_back(glm::vec3(x + 33, 0, -80));
+		g_wallPositions.push_back(glm::vec3(x + 33, -0.8, -80));
+		g_wallPositions.push_back(glm::vec3(x + 33, -1, -81));
 		g_wallPositions.push_back(glm::vec3(x + 33, 0, -82));
-		g_wallPositions.push_back(glm::vec3(x + 41, 0, -80));
+		g_wallPositions.push_back(glm::vec3(x + 41, -0.8, -80));
+		g_wallPositions.push_back(glm::vec3(x + 41, -1, -81));
 		g_wallPositions.push_back(glm::vec3(x + 41, 0, -82));
-		g_wallPositions.push_back(glm::vec3(x + 43, 0, -80));
+		g_wallPositions.push_back(glm::vec3(x + 43, -0.8, -80));
+		g_wallPositions.push_back(glm::vec3(x + 43, -1, -81));
 		g_wallPositions.push_back(glm::vec3(x + 43, 0, -82));
-		g_wallPositions.push_back(glm::vec3(x + 55, 0, -80));
+		g_wallPositions.push_back(glm::vec3(x + 55, -0.8, -80));
+		g_wallPositions.push_back(glm::vec3(x + 55, -1, -81));
 		g_wallPositions.push_back(glm::vec3(x + 55, 0, -82));
 	}
 	for (int z = 6; z <= 82; z += 2)
 	{
-		//g_merlonsPositions.push_back(glm::vec3(8, 0, -z));
+		g_merlonsPositions.push_back(glm::vec3(6, 0, -z));
+		g_merlonsPositions.push_back(glm::vec3(63, 0, -z));
 		
 	}
 	for (int x = 0; x <= 8; x += 2)
 	{
-		//g_merlonsPositions.push_back(glm::vec3(x + 10, 0, -8));
-		
+		g_merlonsPositions.push_back(glm::vec3(x + 10, 0, -6));
+		g_merlonsPositions.push_back(glm::vec3(x + 18, 0, -6));
+		g_merlonsPositions.push_back(glm::vec3(x + 20, 0, -6));
+		g_merlonsPositions.push_back(glm::vec3(x + 38, 0, -6));
+		g_merlonsPositions.push_back(glm::vec3(x + 40, 0, -6));
+		g_merlonsPositions.push_back(glm::vec3(x + 48, 0, -6));
+
+		g_merlonsPositions.push_back(glm::vec3(x + 15, 0, -82));
+		g_merlonsPositions.push_back(glm::vec3(x + 23, 0, -82));
+		g_merlonsPositions.push_back(glm::vec3(x + 31, 0, -82));
+		g_merlonsPositions.push_back(glm::vec3(x + 39, 0, -82));
+		g_merlonsPositions.push_back(glm::vec3(x + 43, 0, -82));
+		g_merlonsPositions.push_back(glm::vec3(x + 55, 0, -82));
 	}
 };
 
@@ -369,7 +395,7 @@ void drawWalls()
 	{
 		glBindTexture(GL_TEXTURE_2D, wallTx);
 		g_wall.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
-		transformObject(glm::vec3(1.0f, 7.0f, 1.0f), X_AXIS, 0.0f, g_wallPositions[i]);
+		transformObject(glm::vec3(1.0f, 7.0f, 1.0f), X_AXIS, 0.0f, g_merlonsPositions[i]);
 		glDrawElements(GL_TRIANGLES, g_wall.NumIndices(), GL_UNSIGNED_SHORT, 0);
 	}
 }
