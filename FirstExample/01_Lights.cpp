@@ -68,7 +68,7 @@ enum bob_condition
 bob_condition currentCond = UNTOUCHED;
 
 // Texture variables.
-GLuint alexTx, blankTx, leavesTx, wallTx, wall2Tx, glassTx, woodTx, doorTx, roofTx, door2Tx, door3Tx, windowTx;
+GLuint alexTx, blankTx, leavesTx, wallTx, wall2Tx, glassTx, woodTx, doorTx, roofTx, door2Tx, door3Tx, windowTx, cylinderTx;
 GLint width, height, bitDepth;
 
 // Light variables.
@@ -399,6 +399,21 @@ void init(void)
 	glGenerateMipmap(GL_TEXTURE_2D);
 	//glBindTexture(GL_TEXTURE_2D, 0);
 	stbi_image_free(image12);
+
+	unsigned char* image13 = stbi_load("cylinder.png", &width, &height, &bitDepth, 0);
+	if (!image13) cout << "Unable to load file!" << endl;
+
+	glGenTextures(1, &cylinderTx);
+	glBindTexture(GL_TEXTURE_2D, cylinderTx);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image13);
+	// Note: image types with native transparency will need to be GL_RGBA instead of GL_RGB.
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	//glBindTexture(GL_TEXTURE_2D, 0);
+	stbi_image_free(image13);
 
 	glUniform1i(glGetUniformLocation(program, "texture0"), 0);
 
@@ -1863,32 +1878,32 @@ void display(void)
 
 	// TOWERSSSSSSSSSS
 
-	glBindTexture(GL_TEXTURE_2D, wallTx);
+	glBindTexture(GL_TEXTURE_2D, cylinderTx);
 	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(6.0f, 8.0f, 6.0f), X_AXIS, 0.0f, glm::vec3(5.0f, 0.0f, -9.0f));
 	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	glBindTexture(GL_TEXTURE_2D, wallTx);
+	glBindTexture(GL_TEXTURE_2D, cylinderTx);
 	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(12.0f, 8.0f, 12.0f), X_AXIS, 0.0f, glm::vec3(55.0f, 0.0f, -15.0f));
 	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	glBindTexture(GL_TEXTURE_2D, wallTx);
+	glBindTexture(GL_TEXTURE_2D, cylinderTx);
 	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(12.0f, 8.0f, 12.0f), X_AXIS, 0.0f, glm::vec3(5.0f, 0.0f, -85.0f));
 	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	glBindTexture(GL_TEXTURE_2D, wallTx);
+	glBindTexture(GL_TEXTURE_2D, cylinderTx);
 	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(6.0f, 8.0f, 6.0f), X_AXIS, 0.0f, glm::vec3(59.0f, 0.0f, -83.0f));
 	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	glBindTexture(GL_TEXTURE_2D, wallTx);
+	glBindTexture(GL_TEXTURE_2D, cylinderTx);
 	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(4.0f, 8.0f, 4.0f), X_AXIS, 0.0f, glm::vec3(36.0f, 0.0f, -8.5f));
 	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	glBindTexture(GL_TEXTURE_2D, wallTx);
+	glBindTexture(GL_TEXTURE_2D, cylinderTx);
 	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(4.0f, 8.0f, 4.0f), X_AXIS, 0.0f, glm::vec3(27.0f, 0.0f, -8.5f));
 	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
@@ -1949,13 +1964,34 @@ void display(void)
 
 	glBindTexture(GL_TEXTURE_2D, windowTx);
 	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
-	transformObject(glm::vec3(1.5f, 3.0f, 2.0f), X_AXIS, 0.0f, glm::vec3(61.0f, 5.0f, -5.0f));
+	transformObject(glm::vec3(1.5f, 3.0f, 2.0f), X_AXIS, 0.0f, glm::vec3(60.0f, 5.0f, -5.0f));
 	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
 	glBindTexture(GL_TEXTURE_2D, windowTx);
 	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
-	transformObject(glm::vec3(1.5f, 3.0f, 2.0f), X_AXIS, 0.0f, glm::vec3(59.5f, 5.0f, -5.0f));
+	transformObject(glm::vec3(1.5f, 3.0f, 2.0f), X_AXIS, 0.0f, glm::vec3(62.0f, 5.0f, -5.0f));
 	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, windowTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(1.5f, 3.0f, 2.0f), X_AXIS, 0.0f, glm::vec3(62.0f, 5.0f, -83.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, windowTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(1.5f, 3.0f, 2.0f), X_AXIS, 0.0f, glm::vec3(7.0f, 5.0f, -5.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, windowTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(1.5f, 3.0f, 1.8f), Y_AXIS, 45.0f, glm::vec3(14.0f, 5.0f, -76.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, windowTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(1.5f, 3.0f, 2.0f), Y_AXIS, 15.0f, glm::vec3(12.0f, 5.0f, -75.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
 
 	// steps
 
@@ -1981,7 +2017,7 @@ void display(void)
 
 	glBindTexture(GL_TEXTURE_2D, wallTx);
 	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
-	transformObject(glm::vec3(0.5f, 2.0f, 3.0f), X_AXIS, 0.0f, glm::vec3(36.5f, 0.0f, -10.7f));
+	transformObject(glm::vec3(0.5f, 2.0f, 3.0f), Y_AXIS, 10.0f, glm::vec3(36.5f, 0.0f, -10.7f));
 	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
 	// Door
