@@ -60,7 +60,7 @@ int lastX, lastY;
 
 //Collection and collision stuff
 
-bool isExit = false, exitActivated = false, entryDoorLock = false;
+bool exitActivated = false, entryDoorLock = false;
 
 enum bob_condition
 {
