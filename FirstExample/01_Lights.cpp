@@ -82,8 +82,8 @@ DirectionalLight dLight(glm::vec3(-1.0f, 0.0f, -0.5f), // Direction.
 	glm::vec3(1.0f, 1.0f, 0.25f),  // Diffuse colour.
 	0.1f);						  // Diffuse strength.
 
-PointLight pLights[5] = { { glm::vec3(29.0f, 6.0f, -4.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f },
-						  { glm::vec3(37.5f, 6.0f, -4.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f }, 
+PointLight pLights[5] = { { glm::vec3(29.0f, 6.0f, -4.0f), 50.0f, glm::vec3(1.0f, 0.6f, 0.0f), 1.0f },
+						  { glm::vec3(37.5f, 6.0f, -4.0f), 50.0f, glm::vec3(1.0f, 0.6f, 0.0f), 1.0f }, 
 						{ glm::vec3(21.0f, 2.0f, -24.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f }, 
 						{ glm::vec3(34.5f, 1.1f, -43.5f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f },
 						{ glm::vec3(53.5f, 4.0f, -78.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f } };
@@ -2068,6 +2068,28 @@ void display(void)
 	glBindTexture(GL_TEXTURE_2D, woodTx);
 	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(4.0f, 0.5f, 6.0f), X_AXIS, 20.0f, glm::vec3(31.5f, 1.8f, -6.5f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	// torches 
+
+	glBindTexture(GL_TEXTURE_2D, woodTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(0.2f, 1.4f, 0.4f), X_AXIS, 10.0f, glm::vec3(29.0f, 5.0f, -4.5f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, woodTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(0.2f, 1.4f, 0.4f), X_AXIS, 10.0f, glm::vec3(37.5f, 5.0f, -4.5f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, woodTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(0.2f, 1.4f, 0.4f), X_AXIS, 10.0f, glm::vec3(11.0f, 5.0f, -73.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, woodTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(0.2f, 1.4f, 0.4f), X_AXIS, -10.0f, glm::vec3(59.0f, 5.0f, -15.0f));
 	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
 	// back door
