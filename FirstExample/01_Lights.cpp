@@ -58,6 +58,15 @@ glm::vec3 position, frontVec, worldUp, upVec, rightVec; // Set by function
 GLfloat pitch, yaw;
 int lastX, lastY;
 
+//Collection stuff
+enum bob_condition
+{
+	UNTOUCHED,
+	COLLECTED,
+	RETURNED
+};
+bob_condition currentCond = UNTOUCHED;
+
 // Texture variables.
 GLuint alexTx, blankTx, leavesTx, wallTx, wall2Tx, glassTx, woodTx, doorTx, roofTx, door2Tx;
 GLint width, height, bitDepth;
@@ -73,7 +82,7 @@ DirectionalLight dLight(glm::vec3(-1.0f, 0.0f, -0.5f), // Direction.
 PointLight pLights[5] = { { glm::vec3(29.0f, 6.0f, -4.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f },
 						  { glm::vec3(37.5f, 6.0f, -4.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f }, 
 						{ glm::vec3(21.0f, 2.0f, -24.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f }, 
-						{ glm::vec3(34.0f, 4.0f, -43.5f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f },
+						{ glm::vec3(34.5f, 1.1f, -43.5f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f },
 						{ glm::vec3(53.5f, 4.0f, -78.0f), 50.0f, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f } };
 
 SpotLight sLight(glm::vec3(5.0f, 1.75f, -5.0f),	// Position.
@@ -517,6 +526,33 @@ void drawWalls()
 		g_wall.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 		transformObject(glm::vec3(1.0f, 7.0f, 1.0f), X_AXIS, 0.0f, g_merlonsPositions[i]);
 		glDrawElements(GL_TRIANGLES, g_wall.NumIndices(), GL_UNSIGNED_SHORT, 0);
+	}
+}
+
+void checkCollision(char c)
+{
+	switch (c)
+	{
+	case 'p': //plumbob
+		if ((abs(position.x - 22.0f) < 2.0f) && (abs(position.z + 25.0f) < 2.0f))
+		{
+			if (currentCond == UNTOUCHED)
+			{
+				currentCond = COLLECTED;
+			}
+		}
+		else if ((abs(position.x - 35.0f) < 2.0f) && (abs(position.z + 45.0f) < 2.0f))
+		{
+			if (currentCond == COLLECTED)
+			{
+				currentCond = RETURNED;
+			}
+		}
+		break;
+	case 'w': //wall
+		break;
+	case 'e': //exit
+		break;
 	}
 }
 
@@ -1236,11 +1272,6 @@ void display(void)
 	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(1.0f, 1.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(34.0f, 0.0f, -44.0f));
 	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
-
-	glBindTexture(GL_TEXTURE_2D, glassTx);
-	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
-	transformObject(glm::vec3(9.0f, 0.3f, 5.0f), X_AXIS, 0.0f, glm::vec3(30.0f, 3.7f, -46.0f));
-	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
 	// third sector
 	// left
@@ -2221,25 +2252,57 @@ void display(void)
 	transformObject(glm::vec3(6.0f, 7.0f, 6.0f), X_AXIS, 0.0f, glm::vec3(26.0f, 8.0f, -9.5f));
 	glDrawElements(GL_TRIANGLES, g_hat.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
+	checkCollision('p');
+
 	//plumbob
 
-	if ((b_height < 1.0f) || (b_height >= 2.0f))
+	if (currentCond != COLLECTED)
 	{
-		b_dir *= -1.0f;
+		if ((b_height < 1.0f) || (b_height >= 2.0f))
+		{
+			b_dir *= -1.0f;
+		}
+		b_height += b_dir;
+		g_plumbob.ColorShape(0.0f, 1.0f, 0.0f);
+		glBindTexture(GL_TEXTURE_2D, blankTx);
 	}
-	b_height += b_dir;
-	g_plumbob.ColorShape(0.0f, 1.0f, 0.0f);
-	glBindTexture(GL_TEXTURE_2D, blankTx);
-	g_plumbob.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
-	transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 0.0f, glm::vec3(21.2f, b_height, -24.8f));
-	glDrawElements(GL_TRIANGLES, g_plumbob.NumIndices(), GL_UNSIGNED_SHORT, 0);
+	
+	switch (currentCond)
+	{
+	case UNTOUCHED:
+		g_plumbob.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+		transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 0.0f, glm::vec3(21.2f, b_height, -24.8f));
+		glDrawElements(GL_TRIANGLES, g_plumbob.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
-	//g_plumbob.ColorShape(0.0f, 1.0f, 0.0f);
-	glBindTexture(GL_TEXTURE_2D, blankTx);
-	g_plumbob.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
-	transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 180.0f, glm::vec3(21.2f, b_height, -24.3f));
-	glDrawElements(GL_TRIANGLES, g_plumbob.NumIndices(), GL_UNSIGNED_SHORT, 0);
+		g_plumbob.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+		transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 180.0f, glm::vec3(21.2f, b_height, -24.3f));
+		glDrawElements(GL_TRIANGLES, g_plumbob.NumIndices(), GL_UNSIGNED_SHORT, 0);
+		break;
+	case COLLECTED:
+		g_plumbob.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+		transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 0.0f, glm::vec3(21.2f, -100.0f, -24.8f));
+		glDrawElements(GL_TRIANGLES, g_plumbob.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
+		g_plumbob.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+		transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 180.0f, glm::vec3(21.2f, -100.0f, -24.3f));
+		glDrawElements(GL_TRIANGLES, g_plumbob.NumIndices(), GL_UNSIGNED_SHORT, 0);
+		break;
+	case RETURNED:
+		g_plumbob.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+		transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 0.0f, glm::vec3(34.25f, b_height + 1.0f, -43.75f));
+		glDrawElements(GL_TRIANGLES, g_plumbob.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+		g_plumbob.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+		transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 180.0f, glm::vec3(34.25f, b_height + 1.0f, -43.25f));
+		glDrawElements(GL_TRIANGLES, g_plumbob.NumIndices(), GL_UNSIGNED_SHORT, 0);
+		break;
+	}
+
+	//Glass
+	glBindTexture(GL_TEXTURE_2D, glassTx);
+	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(9.0f, 0.3f, 5.0f), X_AXIS, 0.0f, glm::vec3(30.0f, 3.7f, -46.0f));
+	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
 	glBindVertexArray(0); // Done writing.
 	glutSwapBuffers(); // Now for a potentially smoother render.
