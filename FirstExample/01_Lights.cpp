@@ -64,7 +64,7 @@ GLint width, height, bitDepth;
 
 // Light variables.
 AmbientLight aLight(glm::vec3(1.0f, 1.0f, 1.0f),	// Ambient colour.
-	0.25f);							// Ambient strength.
+	0.15f);							// Ambient strength.
 
 DirectionalLight dLight(glm::vec3(-1.0f, 0.0f, -0.5f), // Direction.
 	glm::vec3(1.0f, 1.0f, 0.25f),  // Diffuse colour.
@@ -98,18 +98,55 @@ Prism g_prism(24);
 Plane g_plane;
 Grid g_grid(10); // New UV scale parameter. Works with texture now.
 std::vector<glm::vec3> g_wallPositions;
+std::vector<glm::vec3> g_merlonsPositions;
 
 void createWallPos()
 {
-	for (int z = 0; z <= 100; z += 2)
+	for (int z = 6; z <= 82; z += 1)
 	{
-		g_wallPositions.push_back(glm::vec3(0, 0, -z));
-		g_wallPositions.push_back(glm::vec3(100, 0, -z));
+		g_wallPositions.push_back(glm::vec3(8, 0, -z));
+		g_wallPositions.push_back(glm::vec3(6, 0, -z));
+
+		g_wallPositions.push_back(glm::vec3(61, 0, -z));
+		g_wallPositions.push_back(glm::vec3(63, 0, -z));
 	}
-	for (int x = 1; x <= 100; x += 2)
+	for (int x = 0; x <= 8; x += 1)
 	{
-		g_wallPositions.push_back(glm::vec3(x, 0, 0));
-		g_wallPositions.push_back(glm::vec3(x, 0, -100));
+		g_wallPositions.push_back(glm::vec3(x + 10, 0, -8));
+		g_wallPositions.push_back(glm::vec3(x + 10, 0, -6));
+		g_wallPositions.push_back(glm::vec3(x + 18, 0, -8));
+		g_wallPositions.push_back(glm::vec3(x + 18, 0, -6));
+		g_wallPositions.push_back(glm::vec3(x + 21, 0, -8));
+		g_wallPositions.push_back(glm::vec3(x + 21, 0, -6));
+		g_wallPositions.push_back(glm::vec3(x + 37, 0, -8));
+		g_wallPositions.push_back(glm::vec3(x + 37, 0, -6));
+		g_wallPositions.push_back(glm::vec3(x + 40, 0, -8));
+		g_wallPositions.push_back(glm::vec3(x + 40, 0, -6));
+		g_wallPositions.push_back(glm::vec3(x + 47, 0, -8));
+		g_wallPositions.push_back(glm::vec3(x + 47, 0, -6));
+
+		g_wallPositions.push_back(glm::vec3(x + 17, 0, -80));
+		g_wallPositions.push_back(glm::vec3(x + 17, 0, -82));
+		g_wallPositions.push_back(glm::vec3(x + 25, 0, -80));
+		g_wallPositions.push_back(glm::vec3(x + 25, 0, -82));
+		g_wallPositions.push_back(glm::vec3(x + 33, 0, -80));
+		g_wallPositions.push_back(glm::vec3(x + 33, 0, -82));
+		g_wallPositions.push_back(glm::vec3(x + 41, 0, -80));
+		g_wallPositions.push_back(glm::vec3(x + 41, 0, -82));
+		g_wallPositions.push_back(glm::vec3(x + 43, 0, -80));
+		g_wallPositions.push_back(glm::vec3(x + 43, 0, -82));
+		g_wallPositions.push_back(glm::vec3(x + 55, 0, -80));
+		g_wallPositions.push_back(glm::vec3(x + 55, 0, -82));
+	}
+	for (int z = 6; z <= 82; z += 2)
+	{
+		//g_merlonsPositions.push_back(glm::vec3(8, 0, -z));
+		
+	}
+	for (int x = 0; x <= 8; x += 2)
+	{
+		//g_merlonsPositions.push_back(glm::vec3(x + 10, 0, -8));
+		
 	}
 };
 
@@ -158,10 +195,10 @@ void init(void)
 	stbi_image_free(image);
 
 	// Second texture. Blank one.
-	
+
 	unsigned char* image2 = stbi_load("blank.jpg", &width, &height, &bitDepth, 0);
 	if (!image2) cout << "Unable to load file!" << endl;
-	
+
 	glGenTextures(1, &blankTx);
 	glBindTexture(GL_TEXTURE_2D, blankTx);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image2);
@@ -243,20 +280,20 @@ void init(void)
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
-		ibo = 0;
-		glGenBuffers(1, &ibo);
-	
-		points_vbo = 0;
-		glGenBuffers(1, &points_vbo);
+	ibo = 0;
+	glGenBuffers(1, &ibo);
 
-		colors_vbo = 0;
-		glGenBuffers(1, &colors_vbo);
+	points_vbo = 0;
+	glGenBuffers(1, &points_vbo);
 
-		uv_vbo = 0;
-		glGenBuffers(1, &uv_vbo);
+	colors_vbo = 0;
+	glGenBuffers(1, &colors_vbo);
 
-		normals_vbo = 0;
-		glGenBuffers(1, &normals_vbo);
+	uv_vbo = 0;
+	glGenBuffers(1, &uv_vbo);
+
+	normals_vbo = 0;
+	glGenBuffers(1, &normals_vbo);
 
 	glBindVertexArray(0); // Can optionally unbind the vertex array to avoid modification.
 
@@ -272,7 +309,7 @@ void init(void)
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);
 
-	timer(0); 
+	timer(0);
 
 	createWallPos();
 }
@@ -307,7 +344,7 @@ void transformObject(glm::vec3 scale, glm::vec3 rotationAxis, float rotationAngl
 	Model = glm::translate(Model, translation);
 	Model = glm::rotate(Model, glm::radians(rotationAngle), rotationAxis);
 	Model = glm::scale(Model, scale);
-	
+
 	calculateView();
 	glUniformMatrix4fv(modelID, 1, GL_FALSE, &Model[0][0]);
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, &View[0][0]);
@@ -317,14 +354,22 @@ void transformObject(glm::vec3 scale, glm::vec3 rotationAxis, float rotationAngl
 //---------------------------------------------------------------------
 //
 // display
-//
+// //////////////////////
+
 void drawWalls()
 {
 	for (int i = 0; i < g_wallPositions.size(); i++)
 	{
 		glBindTexture(GL_TEXTURE_2D, wallTx);
 		g_wall.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
-		transformObject(glm::vec3(2.0f, 6.0f, 2.0f), X_AXIS, 0.0f, g_wallPositions[i]);
+		transformObject(glm::vec3(1.0f, 6.0f, 1.0f), X_AXIS, 0.0f, g_wallPositions[i]);
+		glDrawElements(GL_TRIANGLES, g_wall.NumIndices(), GL_UNSIGNED_SHORT, 0);
+	}
+	for (int i = 0; i < g_merlonsPositions.size(); i++)
+	{
+		glBindTexture(GL_TEXTURE_2D, wallTx);
+		g_wall.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+		transformObject(glm::vec3(1.0f, 7.0f, 1.0f), X_AXIS, 0.0f, g_wallPositions[i]);
 		glDrawElements(GL_TRIANGLES, g_wall.NumIndices(), GL_UNSIGNED_SHORT, 0);
 	}
 }
@@ -1869,6 +1914,38 @@ void display(void)
 	g_cube.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(7.0f, 3.0f, 1.0f), X_AXIS, 0.0f, glm::vec3(10.0f, 0.0f, -72.0f));
 	glDrawElements(GL_TRIANGLES, g_cube.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	// TOWERSSSSSSSSSS
+
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(6.0f, 8.0f, 6.0f), X_AXIS, 0.0f, glm::vec3(5.0f, 0.0f, -9.0f));
+	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(12.0f, 8.0f, 12.0f), X_AXIS, 0.0f, glm::vec3(55.0f, 0.0f, -15.0f));
+	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(12.0f, 8.0f, 12.0f), X_AXIS, 0.0f, glm::vec3(5.0f, 0.0f, -85.0f));
+	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(6.0f, 8.0f, 6.0f), X_AXIS, 0.0f, glm::vec3(59.0f, 0.0f, -83.0f));
+	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(4.0f, 8.0f, 4.0f), X_AXIS, 0.0f, glm::vec3(36.0f, 0.0f, -8.5f));
+	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, wallTx);
+	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(4.0f, 8.0f, 4.0f), X_AXIS, 0.0f, glm::vec3(27.0f, 0.0f, -8.5f));
+	glDrawElements(GL_TRIANGLES, g_prism.NumIndices(), GL_UNSIGNED_SHORT, 0);
 
 	/*glBindTexture(GL_TEXTURE_2D, blankTx);
 	g_prism.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
