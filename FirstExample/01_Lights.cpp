@@ -53,7 +53,7 @@ glm::mat4 View, Projection;
 unsigned char keys = 0; // Initialized to 0 or 0b00000000.
 
 // Camera and transform variables.
-float scale = 1.0f, angle = 0.0f;
+float scale = 1.0f, angle = 0.0f, b_height = 1.0f, b_dir = 0.05f;
 glm::vec3 position, frontVec, worldUp, upVec, rightVec; // Set by function
 GLfloat pitch, yaw;
 int lastX, lastY;
@@ -95,6 +95,7 @@ void resetView()
 Cube g_cube;
 Cube g_wall;
 Cone g_hat(24);
+Cone g_plumbob(5);
 Prism g_prism(24);
 Plane g_plane;
 Grid g_grid(10); // New UV scale parameter. Works with texture now.
@@ -328,6 +329,7 @@ void init(void)
 	g_prism.SetMat(0.1, 16);
 	g_grid.SetMat(0.0, 16);
 	g_hat.SetMat(0.1, 16);
+	g_plumbob.SetMat(0.25, 35);
 
 	// Enable depth test and blend.
 	glEnable(GL_DEPTH_TEST);
@@ -2010,6 +2012,25 @@ void display(void)
 	g_hat.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
 	transformObject(glm::vec3(6.0f, 5.0f, 6.0f), X_AXIS, 0.0f, glm::vec3(26.0f, 8.0f, -9.5f));
 	glDrawElements(GL_TRIANGLES, g_hat.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	//plumbob
+
+	if ((b_height < 1.0f)||(b_height >= 2.0f))
+	{
+		b_dir *= -1.0f;
+	}
+	b_height += b_dir;
+	g_plumbob.ColorShape(0.0f, 1.0f, 0.0f);
+
+	g_plumbob.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 0.0f, glm::vec3(20.0f, b_height, -25.5f));
+	glDrawElements(GL_TRIANGLES, g_plumbob.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
+	//g_plumbob.ColorShape(0.0f, 1.0f, 0.0f);
+	g_plumbob.BufferShape(&ibo, &points_vbo, &colors_vbo, &uv_vbo, &normals_vbo, program);
+	transformObject(glm::vec3(0.5f, 1.0f, 0.5f), X_AXIS, 180.0f, glm::vec3(20.0f, b_height, -25.0f));
+	glDrawElements(GL_TRIANGLES, g_plumbob.NumIndices(), GL_UNSIGNED_SHORT, 0);
+
 
 	glBindVertexArray(0); // Done writing.
 	glutSwapBuffers(); // Now for a potentially smoother render.
