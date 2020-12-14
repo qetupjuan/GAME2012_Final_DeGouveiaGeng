@@ -18,10 +18,10 @@
     <ClCompile Include="LoadShaders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="01_Lights.cpp">
+    <ClCompile Include="02_Blending.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="02_Blending.cpp">
+    <ClCompile Include="GAME2012_FinalProject_DeGouveiaGeng.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

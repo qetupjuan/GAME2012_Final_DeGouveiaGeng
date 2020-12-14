@@ -1,7 +1,13 @@
 ﻿
 ///////////////////////////////////////////////////////////////////////
 //
-// 01_JustAmbient.cpp
+// GAME2012 Final Project by De Gouveia (101203253) and Geng Li (101277255)
+//
+// Description
+// 1. Maze constructed according to design plan, with a place for plumbob and a center room.
+// 2. Wall encloses the maze from 4 sides. Gate at the main wall and exit at the back wall.
+// 3. Functional plumbob collection and deposite system to unlock exit
+// 4. Point lights at the important segments of our dark maze and torches (color changes in the center room if plumbob has been successfully deposited)
 //
 ///////////////////////////////////////////////////////////////////////
 
@@ -2375,8 +2381,8 @@ int main(int argc, char** argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
 	glutSetOption(GLUT_MULTISAMPLE, 8);
-	glutInitWindowSize(1024, 1024);
-	glutCreateWindow("GAME2012 - Week 7");
+	glutInitWindowSize(1000, 1000);
+	glutCreateWindow("GAME2012 Final Project De Gouveia Geng");
 
 	glewInit();	//Initializes the glew and prepares the drawing pipeline.
 	init();
