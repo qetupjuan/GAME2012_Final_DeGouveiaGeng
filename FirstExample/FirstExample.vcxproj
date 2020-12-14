@@ -88,9 +88,6 @@
     <ClCompile Include="GAME2012_FinalProject_DeGouveiaGeng.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="02_Blending.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="LoadShaders.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -99,18 +96,14 @@
     <ClInclude Include="Shape.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="alex.jpg" />
     <Image Include="blank.jpg" />
     <Image Include="brick.jpg" />
-    <Image Include="chainmail.png" />
     <Image Include="dirt.png" />
     <Image Include="leaves.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="triangles.frag" />
     <None Include="triangles.vert" />
-    <None Include="triangles2.frag" />
-    <None Include="triangles2.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

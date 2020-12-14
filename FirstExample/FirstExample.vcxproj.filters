@@ -18,9 +18,6 @@
     <ClCompile Include="LoadShaders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="02_Blending.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GAME2012_FinalProject_DeGouveiaGeng.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -37,9 +34,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="alex.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="blank.jpg">
       <Filter>Resource Files</Filter>
     </Image>
@@ -47,9 +41,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="dirt.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="chainmail.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="leaves.jpg">
@@ -61,12 +52,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="triangles.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="triangles2.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="triangles2.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
