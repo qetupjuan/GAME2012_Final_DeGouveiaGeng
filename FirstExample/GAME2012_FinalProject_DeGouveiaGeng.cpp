@@ -246,18 +246,17 @@ void init(void)
 	//glBindTexture(GL_TEXTURE_2D, 0);
 	stbi_image_free(image);
 
-	// Second texture. Blank one.
-
 	unsigned char* image2 = stbi_load("blank.jpg", &width, &height, &bitDepth, 0);
 	if (!image2) cout << "Unable to load file!" << endl;
 
 	glGenTextures(1, &blankTx);
 	glBindTexture(GL_TEXTURE_2D, blankTx);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image2);
+	// Note: image types with native transparency will need to be GL_RGBA instead of GL_RGB.
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	//glBindTexture(GL_TEXTURE_2D, 0);
 	stbi_image_free(image2);
@@ -2369,7 +2368,18 @@ void clean()
 {
 	cout << "Cleaning up!" << endl;
 	glDeleteTextures(1, &alexTx);
-	glDeleteTextures(1, &blankTx);
+	glDeleteTextures(1, &wallTx);
+	glDeleteTextures(1, &wall2Tx);
+	glDeleteTextures(1, &windowTx);
+	glDeleteTextures(1, &woodTx);
+	glDeleteTextures(1, &leavesTx);
+	glDeleteTextures(1, &glassTx);
+	glDeleteTextures(1, &doorTx);
+	glDeleteTextures(1, &roofTx);
+	glDeleteTextures(1, &door2Tx);
+	glDeleteTextures(1, &door3Tx);
+	glDeleteTextures(1, &cylinderTx);
+
 }
 
 //---------------------------------------------------------------------
